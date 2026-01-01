@@ -1,46 +1,37 @@
 "use strict";
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("ScoreOptions", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      nama: {
-        type: Sequelize.STRING,
+      criteriaId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "Criteria",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      tempatLahir: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      tanggalLahir: {
-        type: Sequelize.DATEONLY,
-        allowNull: false,
-      },
-      jenisKelamin: {
-        type: Sequelize.ENUM("L", "P"),
-        allowNull: false,
-      },
-      kodePos: {
-        type: Sequelize.STRING(10),
-        allowNull: false,
-      },
-      alamat: {
+      description: {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      email: {
-        type: Sequelize.STRING,
+      score: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
-      password: {
-        type: Sequelize.STRING,
+      order: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -52,7 +43,8 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("ScoreOptions");
   },
 };

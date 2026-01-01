@@ -1,46 +1,38 @@
 "use strict";
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("Criteria", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      nama: {
+      categoryId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Categories",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      tempatLahir: {
-        type: Sequelize.STRING,
+      weight: {
+        type: Sequelize.DECIMAL(5, 2),
         allowNull: false,
+        comment: "Bobot dalam persen (%)",
       },
-      tanggalLahir: {
-        type: Sequelize.DATEONLY,
+      order: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-      },
-      jenisKelamin: {
-        type: Sequelize.ENUM("L", "P"),
-        allowNull: false,
-      },
-      kodePos: {
-        type: Sequelize.STRING(10),
-        allowNull: false,
-      },
-      alamat: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -52,7 +44,8 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("Criteria");
   },
 };
