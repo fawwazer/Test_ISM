@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "categoryId": 1,
+    "name": "Umur Pemohon",
+    "weight": 30.0,
+    "order": 1
+  },
+  {
+    "id": 2,
+    "categoryId": 1,
+    "name": "Umur Pemohon + Tenor",
+    "weight": 10.0,
+    "order": 2
+  },
+  {
+    "id": 3,
+    "categoryId": 1,
+    "name": "Status Perkawinan",
+    "weight": 40.0,
+    "order": 3
+  },
+  {
+    "id": 4,
+    "categoryId": 1,
+    "name": "Pendidikan",
+    "weight": 20.0,
+    "order": 4
+  },
+  {
+    "id": 5,
+    "categoryId": 2,
+    "name": "Alamat tempat tinggal",
+    "weight": 40.0,
+    "order": 1
+  },
+  {
+    "id": 6,
+    "categoryId": 2,
+    "name": "Kepemilikan tempat tinggal",
+    "weight": 30.0,
+    "order": 2
+  },
+  {
+    "id": 7,
+    "categoryId": 2,
+    "name": "Lama menempati",
+    "weight": 30.0,
+    "order": 3
+  },
+  {
+    "id": 8,
+    "categoryId": 3,
+    "name": "Kategori Perusahaan",
+    "weight": 20.0,
+    "order": 1
+  },
+  { "id": 9, "categoryId": 3, "name": "Jabatan", "weight": 20.0, "order": 2 },
+  {
+    "id": 10,
+    "categoryId": 3,
+    "name": "Lama bekerja",
+    "weight": 20.0,
+    "order": 3
+  },
+  {
+    "id": 11,
+    "categoryId": 3,
+    "name": "Pendapatan THP",
+    "weight": 40.0,
+    "order": 4
+  },
+  {
+    "id": 12,
+    "categoryId": 4,
+    "name": "Rekening Bank",
+    "weight": 10.0,
+    "order": 1
+  },
+  {
+    "id": 13,
+    "categoryId": 4,
+    "name": "Rata-rata saldo per bulannya",
+    "weight": 15.0,
+    "order": 2
+  },
+  {
+    "id": 14,
+    "categoryId": 4,
+    "name": "Track record pembayaran angsuran",
+    "weight": 15.0,
+    "order": 3
+  },
+  {
+    "id": 15,
+    "categoryId": 4,
+    "name": "Track Data SLIK",
+    "weight": 40.0,
+    "order": 4
+  },
+  {
+    "id": 16,
+    "categoryId": 4,
+    "name": "Kepemilikan Kartu Kredit",
+    "weight": 20.0,
+    "order": 5
+  },
+  { "id": 17, "categoryId": 5, "name": "Tenor", "weight": 25.0, "order": 1 },
+  {
+    "id": 18,
+    "categoryId": 5,
+    "name": "Debt Service Ratio",
+    "weight": 75.0,
+    "order": 2
+  },
+  {
+    "id": 19,
+    "categoryId": 6,
+    "name": "Hasil Appraisal",
+    "weight": 10.0,
+    "order": 1
+  },
+  {
+    "id": 20,
+    "categoryId": 6,
+    "name": "Luas Bangunan",
+    "weight": 20.0,
+    "order": 2
+  },
+  {
+    "id": 21,
+    "categoryId": 6,
+    "name": "Tujuan dari Pembiayaan",
+    "weight": 10.0,
+    "order": 3
+  },
+  { "id": 22, "categoryId": 6, "name": "LTV", "weight": 60.0, "order": 4 }
+]

@@ -1,2 +1,5 @@
 node_modules/
 .env
+api_doc.md
+.DS_Store
+example-full-application.json

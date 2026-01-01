@@ -1,0 +1,8 @@
+[
+  { "id": 1, "name": "INFORMASI 1", "weight": 5.0, "order": 1 },
+  { "id": 2, "name": "INFORMASI 2", "weight": 5.0, "order": 2 },
+  { "id": 3, "name": "INFORMASI 3", "weight": 20.0, "order": 3 },
+  { "id": 4, "name": "INFORMASI 4", "weight": 15.0, "order": 4 },
+  { "id": 5, "name": "INFORMASI 5", "weight": 30.0, "order": 5 },
+  { "id": 6, "name": "INFORMASI 6", "weight": 25.0, "order": 6 }
+]

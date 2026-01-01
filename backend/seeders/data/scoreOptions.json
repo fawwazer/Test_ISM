@@ -1,0 +1,340 @@
+[
+  { "criteriaId": 1, "description": "1. 56-65 Tahun", "score": 25, "order": 1 },
+  { "criteriaId": 1, "description": "2. 21-30 Tahun", "score": 50, "order": 2 },
+  {
+    "criteriaId": 1,
+    "description": "3. 31-45 Tahun",
+    "score": 100,
+    "order": 3
+  },
+  { "criteriaId": 1, "description": "4. 46-55 Tahun", "score": 75, "order": 4 },
+  {
+    "criteriaId": 2,
+    "description": "1. Diatas Ketentuan",
+    "score": 25,
+    "order": 1
+  },
+  {
+    "criteriaId": 2,
+    "description": "2. Dibawah Ketentuan",
+    "score": 100,
+    "order": 2
+  },
+  {
+    "criteriaId": 3,
+    "description": "1. Belum Kawin dengan > 2 tanggungan",
+    "score": 25,
+    "order": 1
+  },
+  {
+    "criteriaId": 3,
+    "description": "2. Belum Kawin dengan <= 2 tanggungan",
+    "score": 45,
+    "order": 2
+  },
+  {
+    "criteriaId": 3,
+    "description": "3. Belum Kawin dengan 0 tanggungan",
+    "score": 65,
+    "order": 3
+  },
+  {
+    "criteriaId": 3,
+    "description": "4. Kawin dengan > 2 tanggungan",
+    "score": 85,
+    "order": 4
+  },
+  {
+    "criteriaId": 3,
+    "description": "5. Kawin dengan <= 2 tanggungan",
+    "score": 100,
+    "order": 5
+  },
+  {
+    "criteriaId": 4,
+    "description": "1. SMA atau dibawahnya",
+    "score": 25,
+    "order": 1
+  },
+  {
+    "criteriaId": 4,
+    "description": "2. D1, D2, D3, D4",
+    "score": 50,
+    "order": 2
+  },
+  { "criteriaId": 4, "description": "3. S1", "score": 75, "order": 3 },
+  {
+    "criteriaId": 4,
+    "description": "4. Master atau diatasnya (S2, S3)",
+    "score": 100,
+    "order": 4
+  },
+  {
+    "criteriaId": 5,
+    "description": "1. Tidak sesuai dengan data Bank",
+    "score": 25,
+    "order": 1
+  },
+  {
+    "criteriaId": 5,
+    "description": "2. Sesuai dengan data Bank",
+    "score": 100,
+    "order": 2
+  },
+  { "criteriaId": 6, "description": "1. Lain-lain", "score": 25, "order": 1 },
+  {
+    "criteriaId": 6,
+    "description": "2. Sewa / Kontrak",
+    "score": 50,
+    "order": 2
+  },
+  {
+    "criteriaId": 6,
+    "description": "3. Milik sendiri masih diangsur",
+    "score": 75,
+    "order": 3
+  },
+  {
+    "criteriaId": 6,
+    "description": "4. Milik sendiri",
+    "score": 100,
+    "order": 4
+  },
+  { "criteriaId": 7, "description": "1. <= 2 tahun", "score": 25, "order": 1 },
+  {
+    "criteriaId": 7,
+    "description": "2. > 2 - 5 tahun",
+    "score": 50,
+    "order": 2
+  },
+  {
+    "criteriaId": 7,
+    "description": "3. > 5 - 8 tahun",
+    "score": 75,
+    "order": 3
+  },
+  { "criteriaId": 7, "description": "4. > 8 tahun", "score": 100, "order": 4 },
+  {
+    "criteriaId": 8,
+    "description": "11. Lembaga Departemen",
+    "score": 100,
+    "order": 1
+  },
+  { "criteriaId": 8, "description": "25. BUMD", "score": 25, "order": 2 },
+  {
+    "criteriaId": 8,
+    "description": "31. SWASTA tidak punya rating",
+    "score": 100,
+    "order": 3
+  },
+  {
+    "criteriaId": 8,
+    "description": "32. SWASTA dengan rating",
+    "score": 25,
+    "order": 4
+  },
+  {
+    "criteriaId": 8,
+    "description": "33. SWASTA Kategori I",
+    "score": 75,
+    "order": 5
+  },
+  {
+    "criteriaId": 8,
+    "description": "34. SWASTA Kategori II",
+    "score": 50,
+    "order": 6
+  },
+  { "criteriaId": 9, "description": "1. Staff", "score": 25, "order": 1 },
+  { "criteriaId": 9, "description": "2. Direktur", "score": 75, "order": 2 },
+  { "criteriaId": 9, "description": "3. Komisaris", "score": 100, "order": 3 },
+  { "criteriaId": 10, "description": "1. < 1 tahun", "score": 0, "order": 1 },
+  {
+    "criteriaId": 10,
+    "description": "2. > 2 - 5 Tahun",
+    "score": 25,
+    "order": 2
+  },
+  {
+    "criteriaId": 10,
+    "description": "3. > 5 - 10 Tahun",
+    "score": 75,
+    "order": 3
+  },
+  {
+    "criteriaId": 10,
+    "description": "4. > 10 Tahun",
+    "score": 100,
+    "order": 4
+  },
+  {
+    "criteriaId": 11,
+    "description": "1. <= Rp 10 juta",
+    "score": 25,
+    "order": 1
+  },
+  {
+    "criteriaId": 11,
+    "description": "2. > Rp 10 - Rp 25 juta",
+    "score": 50,
+    "order": 2
+  },
+  {
+    "criteriaId": 11,
+    "description": "3. > Rp 25 - Rp 50 juta",
+    "score": 75,
+    "order": 3
+  },
+  {
+    "criteriaId": 11,
+    "description": "4. > Rp 50 juta",
+    "score": 100,
+    "order": 4
+  },
+  { "criteriaId": 12, "description": "1. Tidak ada", "score": 25, "order": 1 },
+  { "criteriaId": 12, "description": "2. Tabungan", "score": 50, "order": 2 },
+  { "criteriaId": 12, "description": "3. Giro", "score": 75, "order": 3 },
+  {
+    "criteriaId": 12,
+    "description": "4 Tabungan/Giro + Deposito",
+    "score": 100,
+    "order": 4
+  },
+  {
+    "criteriaId": 13,
+    "description": "1. <= Rp 10 juta",
+    "score": 25,
+    "order": 1
+  },
+  {
+    "criteriaId": 13,
+    "description": "2. Rp 10 - Rp 25 juta",
+    "score": 50,
+    "order": 2
+  },
+  {
+    "criteriaId": 13,
+    "description": "3. Rp 25 - Rp 50 juta",
+    "score": 75,
+    "order": 3
+  },
+  {
+    "criteriaId": 13,
+    "description": "4. > Rp 50 juta",
+    "score": 100,
+    "order": 4
+  },
+  {
+    "criteriaId": 14,
+    "description": "1. Peminjam baru",
+    "score": 25,
+    "order": 1
+  },
+  {
+    "criteriaId": 14,
+    "description": "2. Angsuran terlambat tapi lancar",
+    "score": 50,
+    "order": 2
+  },
+  {
+    "criteriaId": 14,
+    "description": "3. Angsuran tepat waktu",
+    "score": 100,
+    "order": 3
+  },
+  {
+    "criteriaId": 15,
+    "description": "1. Kolektibilitas >= 3",
+    "score": 0,
+    "order": 1
+  },
+  {
+    "criteriaId": 15,
+    "description": "2. Ada tunggakan < 3 bulan",
+    "score": 50,
+    "order": 2
+  },
+  {
+    "criteriaId": 15,
+    "description": "3. Tidak ada fasilitas",
+    "score": 75,
+    "order": 3
+  },
+  { "criteriaId": 15, "description": "4. Lancar", "score": 100, "order": 4 },
+  { "criteriaId": 16, "description": "1. Tidak Ada", "score": 25, "order": 1 },
+  { "criteriaId": 16, "description": "2. Basic", "score": 50, "order": 2 },
+  { "criteriaId": 16, "description": "3.Gold", "score": 75, "order": 3 },
+  {
+    "criteriaId": 16,
+    "description": "4.Platinum atau diatasnya",
+    "score": 100,
+    "order": 4
+  },
+  { "criteriaId": 17, "description": "1. > 15 Tahun", "score": 25, "order": 1 },
+  {
+    "criteriaId": 17,
+    "description": "2. > 10 - 15 Tahun",
+    "score": 50,
+    "order": 2
+  },
+  {
+    "criteriaId": 17,
+    "description": "3. > 5 - 10 Tahun",
+    "score": 75,
+    "order": 3
+  },
+  {
+    "criteriaId": 17,
+    "description": "4. <= 5 Tahun",
+    "score": 100,
+    "order": 4
+  },
+  { "criteriaId": 18, "description": "1. > 90%", "score": 0, "order": 1 },
+  { "criteriaId": 18, "description": "2. > 40 - 50%", "score": 50, "order": 2 },
+  { "criteriaId": 18, "description": "3. > 30 - 40%", "score": 75, "order": 3 },
+  { "criteriaId": 18, "description": "4. <= 30%", "score": 100, "order": 4 },
+  {
+    "criteriaId": 19,
+    "description": "1. Tidak marketable",
+    "score": 0,
+    "order": 1
+  },
+  {
+    "criteriaId": 19,
+    "description": "2. Marketable",
+    "score": 100,
+    "order": 2
+  },
+  { "criteriaId": 20, "description": "1. > 200 M2", "score": 25, "order": 1 },
+  {
+    "criteriaId": 20,
+    "description": "2. > 100 - 200 M2",
+    "score": 50,
+    "order": 2
+  },
+  {
+    "criteriaId": 20,
+    "description": "3. > 45 - 100 M2",
+    "score": 75,
+    "order": 3
+  },
+  { "criteriaId": 20, "description": "4. <= 45 M2", "score": 100, "order": 4 },
+  { "criteriaId": 21, "description": "1. Lain-Lain", "score": 25, "order": 1 },
+  {
+    "criteriaId": 21,
+    "description": "2. Disewakan/Investasi",
+    "score": 50,
+    "order": 2
+  },
+  { "criteriaId": 21, "description": "3. Renovasi", "score": 75, "order": 3 },
+  {
+    "criteriaId": 21,
+    "description": "4. Pertama & Ditempati Sendiri",
+    "score": 100,
+    "order": 4
+  },
+  { "criteriaId": 22, "description": "1. LTV > 90%", "score": 25, "order": 1 },
+  { "criteriaId": 22, "description": "2. LTV > 80%", "score": 50, "order": 2 },
+  { "criteriaId": 22, "description": "3. LTV > 70%", "score": 75, "order": 3 },
+  { "criteriaId": 22, "description": "4. LTV < 70%", "score": 100, "order": 4 }
+]
