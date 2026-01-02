@@ -33,8 +33,9 @@ These accounts are automatically created when running:
 npx sequelize db:seed:all
 ```
 
-Use these credentials to login and test role-based features:
+Use these credentials to login and test the credit scoring system:
 
-- Admin can access all features
-- Officers can complete assessment (INFORMASI 4-6)
-- Regular users can only submit draft applications (INFORMASI 1-3)
+- **Admin** and **Officers** can access all features
+- Create credit applications with all 22 criteria (INFORMASI 1-6)
+- View, update, and delete applications
+- Generate scoring reports with risk category (HIGH/MEDIUM/LOW)

@@ -22,7 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
+      },
+      userManualData: {
+        type: DataTypes.JSON,
+        allowNull: true,
       },
       applicantName: {
         type: DataTypes.STRING,
@@ -50,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: true,
         defaultValue: 0,
+      },
+      riskCategory: {
+        type: DataTypes.STRING(20),
+        allowNull: true,
       },
       notes: {
         type: DataTypes.TEXT,
