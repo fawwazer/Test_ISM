@@ -1,40 +1,61 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchScoringStructure,
+  setScores,
   setScore,
-  clearScores,
 } from "../store/slices/scoringSlice";
-import { createApplication } from "../store/slices/applicationSlice";
-
+import {
+  fetchApplicationById,
+  updateApplication,
+} from "../store/slices/applicationSlice";
 import PageHeader from "../components/PageHeader";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-export default function Form() {
+export default function EditForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams();
-  const userId = searchParams.get("userId");
+  const { id } = useParams();
 
-  const { categories, scores, loading } = useSelector((state) => state.scoring);
-  const { loading: submitting } = useSelector((state) => state.application);
+  const {
+    categories,
+    scores,
+    loading: scoringLoading,
+  } = useSelector((state) => state.scoring);
+  const { currentApplication, loading: appLoading } = useSelector(
+    (state) => state.application
+  );
+
+  const loading = scoringLoading || appLoading;
   const [error, setError] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  const [userManualData, setUserManualData] = useState({
-    nama: "",
-    email: "",
-    tempatLahir: "",
-    tanggalLahir: "",
-    jenisKelamin: "L",
-    kodePos: "",
-    alamat: "",
-  });
 
   useEffect(() => {
-    dispatch(clearScores());
-    dispatch(fetchScoringStructure());
-  }, [dispatch]);
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchScoringStructure()).unwrap();
+        const appData = await dispatch(fetchApplicationById(id)).unwrap();
+
+        // Pre-fill scores from existing application
+        const existingScores = {};
+        appData.scores.forEach((score) => {
+          existingScores[score.criteriaId] = score.scoreOptionId;
+        });
+        dispatch(setScores(existingScores));
+      } catch (err) {
+        window.swal.fire({
+          icon: "error",
+          title: "Failed to Load",
+          text: err || "Failed to load application data",
+          confirmButtonColor: "#dc3545",
+        });
+        setError(err || "Failed to load application data");
+      }
+    };
+
+    fetchData();
+  }, [id, dispatch]);
 
   const handleScoreChange = useCallback(
     (criteriaId, scoreOptionId) => {
@@ -43,67 +64,23 @@ export default function Form() {
     [dispatch]
   );
 
-  const handleManualDataChange = useCallback((e) => {
-    e.persist?.(); // For older React versions compatibility
-    const name = e.target.name;
-    const value = e.target.value;
-    setUserManualData((prev) => ({ ...prev, [name]: value }));
-  }, []);
-
-  const totalSteps = useMemo(() => {
-    return userId ? categories.length : categories.length + 1;
-  }, [userId, categories.length]);
+  const totalSteps = categories.length;
 
   const handleNext = () => {
-    // Validasi step user info
-    if (currentStep === 0 && !userId) {
-      if (!userManualData.nama.trim()) {
-        window.swal.fire({
-          icon: "warning",
-          title: "Incomplete Information",
-          text: "Please enter applicant name",
-          confirmButtonColor: "#ffc107",
-        });
-        return;
-      }
-      if (!userManualData.email.trim()) {
-        window.swal.fire({
-          icon: "warning",
-          title: "Incomplete Information",
-          text: "Please enter applicant email",
-          confirmButtonColor: "#ffc107",
-        });
-        return;
-      }
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(userManualData.email)) {
-        window.swal.fire({
-          icon: "warning",
-          title: "Invalid Email",
-          text: "Please enter a valid email address",
-          confirmButtonColor: "#ffc107",
-        });
-        return;
-      }
-    }
-
     // Validasi kategori saat ini
-    if (currentStep > 0 || userId) {
-      const categoryIndex = userId ? currentStep : currentStep - 1;
-      const category = categories[categoryIndex];
-      if (category) {
-        const unfilledCriteria = category.criteria.filter(
-          (criteria) => !scores[criteria.id]
-        );
-        if (unfilledCriteria.length > 0) {
-          window.swal.fire({
-            icon: "warning",
-            title: "Incomplete Category",
-            html: `Please complete all criteria in <strong>${category.name}</strong>.<br>${unfilledCriteria.length} criteria remaining.`,
-            confirmButtonColor: "#ffc107",
-          });
-          return;
-        }
+    const category = categories[currentStep];
+    if (category) {
+      const unfilledCriteria = category.criteria.filter(
+        (criteria) => !scores[criteria.id]
+      );
+      if (unfilledCriteria.length > 0) {
+        window.swal.fire({
+          icon: "warning",
+          title: "Incomplete Category",
+          html: `Please complete all criteria in <strong>${category.name}</strong>.<br>${unfilledCriteria.length} criteria remaining.`,
+          confirmButtonColor: "#ffc107",
+        });
+        return;
       }
     }
 
@@ -120,7 +97,8 @@ export default function Form() {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError("");
 
     const criteriaCount = categories.reduce(
@@ -128,6 +106,7 @@ export default function Form() {
       0
     );
 
+    // Validasi semua kriteria sudah diisi
     if (Object.keys(scores).length !== criteriaCount) {
       const filledCount = Object.keys(scores).length;
       window.swal.fire({
@@ -139,6 +118,25 @@ export default function Form() {
       return;
     }
 
+    // Cek apakah ada kriteria yang belum dipilih per kategori
+    for (const category of categories) {
+      const categoryName = category.name;
+      const criteriaInCategory = category.criteria;
+      const unfilledCriteria = criteriaInCategory.filter(
+        (criteria) => !scores[criteria.id]
+      );
+
+      if (unfilledCriteria.length > 0) {
+        window.swal.fire({
+          icon: "warning",
+          title: "Incomplete Category",
+          html: `Please complete all criteria in <strong>${categoryName}</strong>.<br>${unfilledCriteria.length} criteria remaining.`,
+          confirmButtonColor: "#ffc107",
+        });
+        return;
+      }
+    }
+
     const scoresArray = Object.entries(scores).map(
       ([criteriaId, scoreOptionId]) => ({
         criteriaId: parseInt(criteriaId),
@@ -148,130 +146,46 @@ export default function Form() {
 
     const payload = {
       scores: scoresArray,
+      applicantName: currentApplication.applicantName,
     };
 
-    if (userId) {
-      payload.userId = parseInt(userId);
-    } else {
-      payload.userManualData = userManualData;
-      payload.applicantName = userManualData.nama;
-    }
-
     try {
-      const result = await dispatch(createApplication(payload)).unwrap();
+      await dispatch(updateApplication({ id, payload })).unwrap();
       window.swal
         .fire({
           icon: "success",
           title: "Success!",
-          text: "Application created successfully!",
+          text: "Application updated successfully!",
           confirmButtonColor: "#0d6efd",
         })
         .then(() => {
-          navigate(`/report/${result.applicationId}`);
+          navigate(`/report/${id}`);
         });
-    } catch (error) {
+    } catch (err) {
       window.swal.fire({
         icon: "error",
-        title: "Submission Failed",
-        text: error,
+        title: "Update Failed",
+        text: err,
         confirmButtonColor: "#dc3545",
       });
-      setError(error);
+      setError(err);
     }
   };
 
-  const renderStepContent = useCallback(() => {
-    // Step 0: User Info (hanya jika tidak ada userId)
-    if (currentStep === 0 && !userId) {
-      return (
-        <div className="card shadow-sm mb-4">
-          <div className="card-header bg-primary text-white">
-            <h5 className="mb-0">Applicant Information</h5>
-          </div>
-          <div className="card-body">
-            <div className="row g-3">
-              <div className="col-md-6">
-                <label className="form-label fw-semibold">Nama Lengkap *</label>
-                <input
-                  type="text"
-                  name="nama"
-                  value={userManualData.nama}
-                  onChange={handleManualDataChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label fw-semibold">Email *</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={userManualData.email}
-                  onChange={handleManualDataChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label fw-semibold">Tempat Lahir</label>
-                <input
-                  type="text"
-                  name="tempatLahir"
-                  value={userManualData.tempatLahir}
-                  onChange={handleManualDataChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label fw-semibold">Tanggal Lahir</label>
-                <input
-                  type="date"
-                  name="tanggalLahir"
-                  value={userManualData.tanggalLahir}
-                  onChange={handleManualDataChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-md-4">
-                <label className="form-label fw-semibold">Jenis Kelamin</label>
-                <select
-                  name="jenisKelamin"
-                  value={userManualData.jenisKelamin}
-                  onChange={handleManualDataChange}
-                  className="form-select"
-                >
-                  <option value="L">Laki-laki</option>
-                  <option value="P">Perempuan</option>
-                </select>
-              </div>
-              <div className="col-md-4">
-                <label className="form-label fw-semibold">Kode Pos</label>
-                <input
-                  type="text"
-                  name="kodePos"
-                  value={userManualData.kodePos}
-                  onChange={handleManualDataChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-md-4">
-                <label className="form-label fw-semibold">Alamat</label>
-                <input
-                  type="text"
-                  name="alamat"
-                  value={userManualData.alamat}
-                  onChange={handleManualDataChange}
-                  className="form-control"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
-    // Steps untuk categories
-    const categoryIndex = userId ? currentStep : currentStep - 1;
-    const category = categories[categoryIndex];
+  if (error && !currentApplication) {
+    return (
+      <div className="min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="alert alert-danger">{error}</div>
+      </div>
+    );
+  }
 
+  const renderStepContent = () => {
+    const category = categories[currentStep];
     if (!category) return null;
 
     return (
@@ -330,25 +244,13 @@ export default function Form() {
         </div>
       </div>
     );
-  }, [
-    currentStep,
-    userId,
-    userManualData,
-    categories,
-    scores,
-    handleManualDataChange,
-    handleScoreChange,
-  ]);
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  };
 
   return (
     <div className="min-vh-100 bg-light py-4">
       <div className="container">
         <PageHeader
-          title="Create Application"
+          title={`Edit Application - ${currentApplication?.applicationNumber}`}
           onBack={() => navigate("/users")}
         />
 
@@ -357,6 +259,30 @@ export default function Form() {
             {error}
           </div>
         )}
+
+        {/* Applicant Info */}
+        <div className="card shadow-sm mb-4">
+          <div className="card-header bg-info text-white">
+            <h5 className="mb-0">Applicant Information</h5>
+          </div>
+          <div className="card-body">
+            <div className="row">
+              <div className="col-md-6">
+                <p className="mb-2">
+                  <strong>Name:</strong> {currentApplication?.applicantName}
+                </p>
+              </div>
+              <div className="col-md-6">
+                <p className="mb-2">
+                  <strong>Status:</strong>{" "}
+                  <span className="badge bg-secondary">
+                    {currentApplication?.status}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Progress Stepper */}
         <div className="card shadow-sm mb-4">
@@ -379,31 +305,14 @@ export default function Form() {
               ></div>
             </div>
             <div className="d-flex justify-content-between mt-3 gap-2">
-              {!userId && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCurrentStep(0);
-                    window.scrollTo(0, 0);
-                  }}
-                  className={`btn btn-sm flex-fill ${
-                    currentStep === 0 ? "btn-primary" : "btn-outline-secondary"
-                  }`}
-                  style={{ fontSize: "0.75rem" }}
-                >
-                  User Info
-                </button>
-              )}
               {categories.map((cat, idx) => {
-                const stepNum = userId ? idx : idx + 1;
-                const isActive = currentStep === stepNum;
+                const isActive = currentStep === idx;
                 return (
                   <button
                     key={cat.id}
                     type="button"
                     onClick={() => {
-                      const targetStep = userId ? idx : idx + 1;
-                      setCurrentStep(targetStep);
+                      setCurrentStep(idx);
                       window.scrollTo(0, 0);
                     }}
                     className={`btn btn-sm flex-fill ${
@@ -440,21 +349,21 @@ export default function Form() {
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  disabled={submitting}
+                  disabled={loading}
                   className="btn btn-success btn-lg px-5"
                 >
-                  {submitting ? (
+                  {loading ? (
                     <>
                       <span
                         className="spinner-border spinner-border-sm me-2"
                         role="status"
                         aria-hidden="true"
                       ></span>
-                      Creating...
+                      Updating...
                     </>
                   ) : (
                     <>
-                      Submit Application
+                      Update Application
                       <i className="bi bi-check-circle ms-2"></i>
                     </>
                   )}
