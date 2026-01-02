@@ -34,7 +34,7 @@ class OfficerController {
 
   static async createApplication(req, res, next) {
     try {
-      const { userId, userManualData, applicantName, scores } = req.body;
+      let { userId, userManualData, applicantName, scores } = req.body;
       const officerId = req.user.id;
 
       if (!userId && !userManualData) {
@@ -64,6 +64,33 @@ class OfficerController {
               message: `userManualData.${field} is required`,
             });
           }
+        }
+
+        // Check if user with email already exists
+        const existingUser = await User.findOne({
+          where: { email: userManualData.email },
+        });
+
+        if (existingUser) {
+          // Use existing user instead
+          userId = existingUser.id;
+          userManualData = null;
+        } else {
+          // Create new user from manual data
+          const bcrypt = require("bcryptjs");
+          const newUser = await User.create({
+            nama: userManualData.nama,
+            email: userManualData.email,
+            tempatLahir: userManualData.tempatLahir || null,
+            tanggalLahir: userManualData.tanggalLahir || null,
+            jenisKelamin: userManualData.jenisKelamin || "L",
+            kodePos: userManualData.kodePos || null,
+            alamat: userManualData.alamat || null,
+            password: await bcrypt.hash("DefaultPassword123!", 10),
+            role: "user",
+          });
+          userId = newUser.id;
+          userManualData = null;
         }
       }
 
@@ -289,6 +316,28 @@ class OfficerController {
         (a, b) => a.categoryId - b.categoryId
       );
 
+      // Get user data if userId exists
+      let userData = null;
+      if (application.userId) {
+        const user = await User.findByPk(application.userId, {
+          attributes: [
+            "id",
+            "nama",
+            "email",
+            "tempatLahir",
+            "tanggalLahir",
+            "jenisKelamin",
+            "kodePos",
+            "alamat",
+          ],
+        });
+        if (user) {
+          userData = user.toJSON();
+        }
+      } else if (application.userManualData) {
+        userData = application.userManualData;
+      }
+
       res.status(200).json({
         data: {
           applicationNumber: application.applicationNumber,
@@ -296,6 +345,7 @@ class OfficerController {
           totalScore: application.totalScore,
           riskCategory: application.riskCategory,
           createdAt: application.createdAt,
+          userData,
           report,
         },
       });
